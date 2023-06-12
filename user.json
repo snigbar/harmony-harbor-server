@@ -1,0 +1,76 @@
+[
+    {
+      "name": "John Doe",
+      "email": "john.doe@example.com",
+      "pictureurl": "https://example.com/picture.jpg",
+      "role": "admin",
+      "gender": "Male",
+      "address": "123 Admin Street, City, Country",
+      "contactNumber": "+1234567890"
+    },
+    {
+      "name": "Jane Smith",
+      "email": "jane.smith@example.com",
+      "pictureurl": "https://example.com/jane.jpg",
+      "role": "instructor",
+      "gender": "Female",
+      "address": "456 Instructor Street, City, Country",
+      "contactNumber": "+0987654321"
+    },
+    {
+      "name": "David Johnson",
+      "email": "david.johnson@example.com",
+      "pictureurl": "https://example.com/david.jpg",
+      "role": "instructor",
+      "gender": "Male",
+      "address": "789 Instructor Street, City, Country",
+      "contactNumber": "+1122334455"
+    },
+    {
+      "name": "Emily Wilson",
+      "email": "emily.wilson@example.com",
+      "pictureurl": "https://example.com/emily.jpg",
+      "role": "instructor",
+      "gender": "Female",
+      "address": "321 Instructor Street, City, Country",
+      "contactNumber": "+9988776655"
+    },
+    {
+      "name": "Michael Brown",
+      "email": "michael.brown@example.com",
+      "pictureurl": "https://example.com/michael.jpg",
+      "role": "instructor",
+      "gender": "Male",
+      "address": "654 Instructor Street, City, Country",
+      "contactNumber": "+5544332211"
+    },
+    {
+      "name": "Olivia Davis",
+      "email": "olivia.davis@example.com",
+      "pictureurl": "https://example.com/olivia.jpg",
+      "role": "instructor",
+      "gender": "Female",
+      "address": "987 Instructor Street, City, Country",
+      "contactNumber": "+6677889900"
+    },
+
+    {
+      "name": "Sophia Anderson",
+      "email": "sophia.anderson@example.com",
+      "pictureurl": "https://example.com/sophia.jpg",
+      "role": "instructor",
+      "gender": "Female",
+      "address": "5678 Instructor Street, City, Country",
+      "contactNumber": "+9988776655"
+    },
+    {
+      "name": "James Lee",
+      "email": "james.lee@example.com",
+      "pictureurl": "https://example.com/james.jpg",
+      "role": "instructor",
+      "gender": "Male",
+      "address": "9876 Instructor Street, City, Country",
+      "contactNumber": "+5544332211"
+    }
+  ]
+  

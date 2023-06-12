@@ -34,13 +34,25 @@ async function run() {
     // Connect the client to the server	(optional starting in v4.7)
     await client.connect();
     // Send a ping to confirm a successful connection
-    await client.db("admin").command({ ping: 1 });
-    console.log("Pinged your deployment. You successfully connected to MongoDB!");
+    // await client.db("admin").command({ ping: 1 });
+    // console.log("Pinged your deployment. You successfully connected to MongoDB!");
+
+
+    const classes = client.db("harmony").collection('classes')
 
     
     app.get('/', (req,res)=>{
         res.send("running beta........")
     })
+
+    // get all classes
+
+    app.get('/classes', async(req,res) =>{
+      const result = await classes.find().sort({ enrolled: -1 }).toArray();
+      const popularClasses = result.slice(0, 6)
+      res.send(popularClasses)
+    })
+    
 
 
   } finally {
@@ -51,5 +63,6 @@ async function run() {
 run().catch(console.dir);
 
 
-
-app.listen(port)
+app.listen(port, () => {
+  console.log(`${port}`);
+})

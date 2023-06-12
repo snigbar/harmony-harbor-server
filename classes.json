@@ -1,0 +1,133 @@
+[
+    {
+      "className": "Violin Class",
+      "classImage": "https://i.ibb.co/dgLvmSN/violin.jpg",
+      "instructorName": "Jane Smith",
+      "instructorEmail": "jane.smith@example.com",
+      "availableSeats": "15",
+      "price": "120",
+      "status": "approved",
+      "enrolled": 0
+    },
+    {
+      "className": "Drum Class",
+      "classImage": "https://i.ibb.co/jHJhS8g/drum.jpg",
+      "instructorName": "David Johnson",
+      "instructorEmail": "david.johnson@example.com",
+      "availableSeats": "22",
+      "price": "130",
+      "status": "approved",
+      "enrolled": 0
+    },
+    {
+      "className": "Flute Class",
+      "classImage": "https://i.ibb.co/TmpDHHQ/fluet.jpg",
+      "instructorName": "Emily Wilson",
+      "instructorEmail": "emily.wilson@example.com",
+      "availableSeats": "17",
+      "price": "110",
+      "status": "approved",
+      "enrolled": 0
+    },
+    {
+      "className": "Saxophone Class",
+      "classImage": "https://i.ibb.co/KVKjMnD/sexaphone.webp",
+      "instructorName": "Michael Brown",
+      "instructorEmail": "michael.brown@example.com",
+      "availableSeats": "25",
+      "price": "160",
+      "status": "approved",
+      "enrolled": 0
+    },
+    {
+      "className": "Trumpet Class",
+      "classImage": "https://i.ibb.co/sKxSFSq/trumpet.jpg",
+      "instructorName": "Olivia Davis",
+      "instructorEmail": "olivia.davis@example.com",
+      "availableSeats": "19",
+      "price": "140",
+      "status": "approved",
+      "enrolled": 0
+    },
+    {
+      "className": "Cello Class",
+      "classImage": "https://i.ibb.co/gg7QvSN/cello.jpg",
+      "instructorName": "Sophia Anderson",
+      "instructorEmail": "sophia.anderson@example.com",
+      "availableSeats": "23",
+      "price": "170",
+      "status": "approved",
+      "enrolled": 0
+    },
+    {
+      "className": "Clarinet Class",
+      "classImage": "https://i.ibb.co/KLQhqkk/clarinet.jpg",
+      "instructorName": "James Lee",
+      "instructorEmail": "james.lee@example.com",
+      "availableSeats": "16",
+      "price": "90",
+      "status": "approved",
+      "enrolled": 0
+    },
+    {
+      "className": "Guitar Class",
+      "classImage": "https://i.ibb.co/f1H23jj/guitar.jpg",
+      "instructorName": "Jane Smith",
+      "instructorEmail": "jane.smith@example.com",
+      "availableSeats": "18",
+      "price": "100",
+      "status": "approved",
+      "enrolled": 0
+    },
+    {
+      "className": "Piano Class",
+      "classImage": "https://i.ibb.co/MZyrrKZ/piano.jpg",
+      "instructorName": "Jane Smith",
+      "instructorEmail": "jane.smith@example.com",
+      "availableSeats": "20",
+      "price": "150",
+      "status": "approved",
+      "enrolled": 0
+    },
+    {
+      "className": "Flute Class",
+      "classImage": "https://i.ibb.co/TmpDHHQ/fluet.jpg",
+      "instructorName": "Emily Wilson",
+      "instructorEmail": "emily.wilson@example.com",
+      "availableSeats": "17",
+      "price": "110",
+      "status": "approved",
+      "enrolled": 0
+    },
+    {
+      "className": "Saxophone Class",
+      "classImage": "https://i.ibb.co/KVKjMnD/sexaphone.webp",
+      "instructorName": "Michael Brown",
+      "instructorEmail": "michael.brown@example.com",
+      "availableSeats": "25",
+      "price": "160",
+      "status": "approved",
+      "enrolled": 0
+    },
+    {
+      "className": "Trumpet Class",
+      "classImage": "https://i.ibb.co/sKxSFSq/trumpet.jpg",
+      "instructorName": "Olivia Davis",
+      "instructorEmail": "olivia.davis@example.com",
+      "availableSeats": "19",
+      "price": "140",
+      "status": "approved",
+      "enrolled": 0
+    },
+    {
+      "className": "Cello Class",
+      "classImage": "https://i.ibb.co/gg7QvSN/cello.jpg",
+      "instructorName": "Sophia Anderson",
+      "instructorEmail": "sophia.anderson@example.com",
+      "availableSeats": "23",
+      "price": "170",
+      "status": "approved",
+      "enrolled": 0
+    }
+  ]
+  
