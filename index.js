@@ -39,6 +39,7 @@ async function run() {
 
 
     const classes = client.db("harmony").collection('classes')
+    const users = client.db("harmony").collection('users')
 
     
     app.get('/', (req,res)=>{
@@ -49,10 +50,30 @@ async function run() {
 
     app.get('/classes', async(req,res) =>{
       const result = await classes.find().sort({ enrolled: -1 }).toArray();
-      const popularClasses = result.slice(0, 6)
+      const popularClasses = result
       res.send(popularClasses)
     })
     
+    // get instructor
+    app.get('/instructors', async(req,res) =>{
+      const query = {role:'instructor'}
+      const result = await users.find(query).sort({ students: -1 }).toArray();
+      const instructors = result
+      res.send(instructors)
+    })
+    
+    // create a user
+    app.post('/users', async (req, res) => {
+      const user = req.body;
+      const query = { email: user.email }
+      const alreadyExist = await users.findOne(query);
+  
+      if (alreadyExist) {
+        return res.send({ message: 'user exists' })
+      }
+      const result = await users.insertOne(user);
+      res.send(result);
+    });
 
 
   } finally {
