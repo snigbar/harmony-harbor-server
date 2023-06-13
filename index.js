@@ -3,6 +3,7 @@ const cors = require('cors')
 require('dotenv').config()
 const app = express();
 const port = process.env.PORT || 5000;
+const jwt = require('jsonwebtoken');
 
 //middlewares
 const corsConfig = {
@@ -13,7 +14,22 @@ const corsConfig = {
 app.use(cors(corsConfig));
 app.use(express.json())
 
-// response
+// verify jwt
+const verifyJWT = (req, res, next) => {
+  const authorization = req.headers.authorization;
+  if (!authorization) {
+    return res.status(401).send({ error: true, message: 'unauthorized access' });
+  }
+  const token = authorization.split(' ')[1];
+
+  jwt.verify(token, process.env.JWT_SECRET, (err, decoded) => {
+    if (err) {
+      return res.status(401).send({ error: true, message: 'unauthorized access' })
+    }
+    req.decoded = decoded;
+    next();
+  })
+}
 
 
 
@@ -40,12 +56,19 @@ async function run() {
 
     const classes = client.db("harmony").collection('classes')
     const users = client.db("harmony").collection('users')
+    const cart = client.db("harmony").collection('cart')
 
     
     app.get('/', (req,res)=>{
         res.send("running beta........")
     })
 
+    // jwt token
+      app.post('/jwt', (req, res) => {
+      const user = req.body;
+      const token = jwt.sign(user, process.env.JWT_SECRET, { expiresIn: '1h' })
+      res.send({ token })
+      })
     // get all classes
 
     app.get('/classes', async(req,res) =>{
@@ -74,6 +97,15 @@ async function run() {
       const result = await users.insertOne(user);
       res.send(result);
     });
+
+    // addtocart
+
+    app.post('/cart', async(req,res) =>{
+      const data = req.body;
+      const result = await cart.insertOne(data);
+      res.send(result)
+    })
+  
 
 
   } finally {
