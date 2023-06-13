@@ -33,7 +33,7 @@ const verifyJWT = (req, res, next) => {
 
 
 
-const { MongoClient, ServerApiVersion } = require('mongodb');
+const { MongoClient, ServerApiVersion, ObjectId } = require('mongodb');
 const uri = `mongodb+srv://${process.env.DB_USER}:${process.env.DB_PASS}@cluster0.b9yxwfb.mongodb.net/?retryWrites=true&w=majority`;
 
 // Create a MongoClient with a MongoClientOptions object to set the Stable API version
@@ -106,6 +106,32 @@ async function run() {
       res.send(result)
     })
   
+    // get my cart
+
+  // get cart 
+  app.get('/carts', verifyJWT, async(req,res)=>{
+    const {email} = req.query;
+
+    if(!email) return res.send([])
+
+
+    const decodedEmail = req.decoded.email;
+
+    if (email !== decodedEmail) {
+      return res.status(403).send({ error: true, message: 'access not allowed' })
+    }
+
+    const query = {email: email}
+    const result = await cart.find(query).toArray()
+    res.send(result)
+  })
+// deleting a cart
+  app.delete('/carts/:id', async (req, res) => {
+    const id = req.params.id;
+    const query = { _id: new ObjectId(id) };
+    const result = await cart.deleteOne(query);
+    res.send(result)
+  })
 
 
   } finally {
