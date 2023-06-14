@@ -201,6 +201,30 @@ async function run() {
     res.send({ insertResult, deleteResult, updateSeat});
   })
 
+  // get admin
+  app.get('/users/admin/:email', verifyJWT, async (req, res) => {
+    const email = req.params.email;
+
+    if (req.decoded.email !== email) {res.send({ admin: false })}
+
+    const query = { email: email }
+    const user = await users.findOne(query);
+    const result = { admin: user?.role === 'admin' }
+    res.send(result);
+  })
+
+  // get instructor
+  app.get('/users/instructor/:email', verifyJWT, async (req, res) => {
+    const email = req.params.email;
+
+    if (req.decoded.email !== email) {res.send({ admin: false })}
+
+    const query = { email: email }
+    const user = await users.findOne(query);
+    const result = { instructor: user?.role === 'instructor' }
+    res.send(result);
+  })
+
   } 
   finally {
     // Ensures that the client will close when you finish/error
