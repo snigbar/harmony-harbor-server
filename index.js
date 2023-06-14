@@ -4,6 +4,7 @@ require('dotenv').config()
 const app = express();
 const port = process.env.PORT || 5000;
 const jwt = require('jsonwebtoken');
+const stripe = require('stripe')(process.env.PAYMENT_SECRET_KEY)
 
 //middlewares
 const corsConfig = {
@@ -13,6 +14,8 @@ const corsConfig = {
 }
 app.use(cors(corsConfig));
 app.use(express.json())
+
+
 
 // verify jwt
 const verifyJWT = (req, res, next) => {
@@ -57,6 +60,7 @@ async function run() {
     const classes = client.db("harmony").collection('classes')
     const users = client.db("harmony").collection('users')
     const cart = client.db("harmony").collection('cart')
+    const payments = client.db("harmony").collection('payments')
 
     
     app.get('/', (req,res)=>{
@@ -125,6 +129,27 @@ async function run() {
     const result = await cart.find(query).toArray()
     res.send(result)
   })
+
+
+  // get payment
+  app.get('/payments', verifyJWT, async(req,res)=>{
+    const {email} = req.query;
+
+    if(!email) return res.send([])
+
+
+    const decodedEmail = req.decoded.email;
+
+    if (email !== decodedEmail) {
+      return res.status(403).send({ error: true, message: 'access not allowed' })
+    }
+
+    const query = {email: email}
+    const result = await payments.find(query).sort({ date: -1 }).toArray()
+    res.send(result)
+  })
+
+
 // deleting a cart
   app.delete('/carts/:id', async (req, res) => {
     const id = req.params.id;
@@ -133,8 +158,51 @@ async function run() {
     res.send(result)
   })
 
+  // payment intent
 
-  } finally {
+
+   app.post('/create-payment-intent', verifyJWT, async (req, res) => {
+    const { price } = req.body;
+    const amount = parseInt(price * 100);
+    const paymentIntent = await stripe.paymentIntents.create({
+      amount: amount,
+      currency: 'usd',
+      payment_method_types: ['card']
+    });
+
+    res.send({
+      clientSecret: paymentIntent.client_secret
+    })
+  
+  })
+
+  // store in data 
+
+  app.post('/payments', verifyJWT, async (req, res) => {
+    const payment = req.body;
+    const insertResult = await payments.insertOne(payment);
+
+    const query = { _id: new ObjectId(payment.cartId) }
+    // console.log(query)
+    const deleteResult = await cart.deleteOne(query)
+
+    const filter = { _id: new ObjectId(payment.classId) }
+    // decresed class
+    let document = await classes.findOne(filter);
+    let updateSeat;
+
+    if (document && document.availableSeats > 0) {  
+      document.availableSeats -= 1;
+    if (document.availableSeats < 0) { 
+      document.availableSeats = 0;
+    }
+    updateSeat = await classes.updateOne(filter, { $set: { availableSeats: document.availableSeats} });
+    } 
+    res.send({ insertResult, deleteResult, updateSeat});
+  })
+
+  } 
+  finally {
     // Ensures that the client will close when you finish/error
     // await client.close();
   }
