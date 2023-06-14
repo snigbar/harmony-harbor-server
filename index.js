@@ -73,6 +73,28 @@ async function run() {
       const token = jwt.sign(user, process.env.JWT_SECRET, { expiresIn: '1h' })
       res.send({ token })
       })
+
+      // verify admin
+      const verifyAdmin = async (req, res, next) => {
+        const email = req.decoded.email;
+        const query = { email: email }
+        const user = await users.findOne(query);
+        if (user?.role !== 'admin') {
+          return res.status(403).send({ error: true, message: 'forbidden message' });
+        }
+        next();
+      }
+
+      // verify instructor
+      const verifyInstructor = async (req, res, next) => {
+        const email = req.decoded.email;
+        const query = { email: email }
+        const user = await users.findOne(query);
+        if (user?.role !== 'instructor') {
+          return res.status(403).send({ error: true, message: 'forbidden message' });
+        }
+        next();
+      }
     // get all classes
 
     app.get('/classes', async(req,res) =>{
@@ -190,13 +212,13 @@ async function run() {
     // decresed class
     let document = await classes.findOne(filter);
     let updateSeat;
-
+    
     if (document && document.availableSeats > 0) {  
       document.availableSeats -= 1;
     if (document.availableSeats < 0) { 
       document.availableSeats = 0;
     }
-    updateSeat = await classes.updateOne(filter, { $set: { availableSeats: document.availableSeats} });
+    updateSeat = await classes.updateOne(filter, { $set: { availableSeats: document.availableSeats}, $inc: { enrolled: 1 }});
     } 
     res.send({ insertResult, deleteResult, updateSeat});
   })
@@ -217,11 +239,18 @@ async function run() {
   app.get('/users/instructor/:email', verifyJWT, async (req, res) => {
     const email = req.params.email;
 
-    if (req.decoded.email !== email) {res.send({ admin: false })}
+    if (req.decoded.email !== email) {res.send({ instructor: false })}
 
     const query = { email: email }
     const user = await users.findOne(query);
     const result = { instructor: user?.role === 'instructor' }
+    res.send(result);
+  })
+
+  // add a class
+  app.post('/addclass', verifyJWT, verifyInstructor, async (req, res) => {
+    const newItem = req.body;
+    const result = await classes.insertOne(newItem)
     res.send(result);
   })
 
