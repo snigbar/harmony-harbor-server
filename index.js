@@ -279,6 +279,22 @@ async function run() {
     res.send(result)
   })
 
+  // update user role
+  app.patch('/admin/role/:id', async(req, res)=>{
+    const id = req.params.id;
+    const query = {_id: new ObjectId(id)}
+    const role = req.body.role
+    const option = {
+      $set: {
+        role:role,
+      }
+    }
+
+    const result = await users.updateOne(query,option)
+    res.send(result);
+ 
+  })
+
 
   } 
   finally {
