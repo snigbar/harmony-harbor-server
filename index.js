@@ -12,7 +12,7 @@ const corsConfig = {
   origin:true,
   methods: ["GET","POST","PATCH","PUT","DELETE","OPTIONS"]
 }
-app.use(cors(corsConfig));
+app.use(cors());
 app.use(express.json())
 
 
@@ -20,8 +20,9 @@ app.use(express.json())
 // verify jwt
 const verifyJWT = (req, res, next) => {
   const authorization = req.headers.authorization;
+
   if (!authorization) {
-    return res.status(401).send({ error: true, message: 'unauthorized access' });
+    return res.status(401).send({ error: true, message: 'unauthorized access not found header' });
   }
   const token = authorization.split(' ')[1];
 
@@ -30,6 +31,7 @@ const verifyJWT = (req, res, next) => {
       return res.status(401).send({ error: true, message: 'unauthorized access' })
     }
     req.decoded = decoded;
+
     next();
   })
 }
@@ -70,7 +72,7 @@ async function run() {
     // jwt token
       app.post('/jwt', (req, res) => {
       const user = req.body;
-      const token = jwt.sign(user, process.env.JWT_SECRET, { expiresIn: '1h' })
+      const token = jwt.sign(user, process.env.JWT_SECRET, { expiresIn: '2h' })
       res.send({ token })
       })
 
@@ -80,7 +82,7 @@ async function run() {
         const query = { email: email }
         const user = await users.findOne(query);
         if (user?.role !== 'admin') {
-          return res.status(403).send({ error: true, message: 'forbidden message' });
+          return res.status(403).send({ error: true, message: 'only admin can access' });
         }
         next();
       }
@@ -91,7 +93,7 @@ async function run() {
         const query = { email: email }
         const user = await users.findOne(query);
         if (user?.role !== 'instructor') {
-          return res.status(403).send({ error: true, message: 'forbidden message' });
+          return res.status(403).send({ error: true, message: 'only instructors can access' });
         }
         next();
       }
@@ -131,8 +133,7 @@ async function run() {
       const result = await cart.insertOne(data);
       res.send(result)
     })
-  
-    // get my cart
+
 
   // get cart 
   app.get('/carts', verifyJWT, async(req,res)=>{
@@ -253,6 +254,31 @@ async function run() {
     const result = await classes.insertOne(newItem)
     res.send(result);
   })
+
+  // handle status
+  app.patch('/admin/status/:id', async(req, res)=>{
+    const id = req.params.id;
+    const query = {_id: new ObjectId(id)}
+    const status = req.body.status
+    const feedback = req.body.feedback
+    const option = {
+      $set: {
+        status:status,
+        feedback: feedback
+      }
+    }
+
+    const result = await classes.updateOne(query,option)
+    res.send(result);
+ 
+  })
+
+  // all users
+  app.get('/admin/users', verifyJWT, verifyAdmin, async(req,res) =>{
+    const result = await users.find().toArray();
+    res.send(result)
+  })
+
 
   } 
   finally {
