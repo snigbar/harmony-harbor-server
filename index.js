@@ -128,6 +128,15 @@ async function run() {
       res.send(result);
     });
 
+    //get me
+
+    app.get('/getme', verifyJWT, async(req,res) =>{
+      const {email} = req.query
+      const query = {email: email}
+      const result = await users.findOne(query)
+      res.send(result)
+    })
+
     // addtocart
 
     app.post('/cart', async(req,res) =>{
@@ -257,6 +266,34 @@ async function run() {
     res.send(result);
   })
 
+  // update a class
+  app.patch('/updateclass/:id', async (req, res) => {
+    const newItem = req.body;
+    const {id} = req.params
+    const query = {_id: new ObjectId(id)}
+    const updateDoc = {
+      $set: {
+        ...newItem
+      },
+    };
+    const result = await classes.updateOne(query, updateDoc)
+    res.send(result);
+  })
+
+  // update a user
+  app.patch('/updateuser/:email', async (req, res) => {
+    const updatedUser = req.body;
+    const {email} = req.params
+    const query = {email:email}
+    const updateDoc = {
+      $set: {
+        ...updatedUser
+      },
+    };
+    const result = await users.updateOne(query, updateDoc)
+    res.send(result);
+  })
+
   // handle status
   app.patch('/admin/status/:id', async(req, res)=>{
     const id = req.params.id;
@@ -301,7 +338,11 @@ async function run() {
   app.delete('/admin/delete/:id', async (req, res) => {
     const id = req.params.id;
     const query = { _id: new ObjectId(id) };
+    const user = await users.findOne(query);
+    const filter = {instructorEmail: user.email}
     const result = await users.deleteOne(query);
+    const classResult = await classes.deleteOne(filter);
+
     res.send(result)
   })
 
